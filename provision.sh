@@ -3,7 +3,7 @@ set -uo pipefail
 
 # ───────────── Configuración ─────────────
 # El token se pasa como variable de entorno (-e CIVITAI_TOKEN=...) en Vast.ai
-TOKEN="${CIVITAI_TOKEN:?Falta CIVITAI_TOKEN}"
+TOKEN="5ab2a62dc5bb5a278547ae7ba5504196"
 BASE="/workspace/ComfyUI/models"
 DOMAIN="civitai.com"
 
