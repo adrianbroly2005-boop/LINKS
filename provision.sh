@@ -2,9 +2,9 @@
 set -uo pipefail
 
 # ───────────── Configuración ─────────────
-# El token se pasa como variable de entorno (-e CIVITAI_TOKEN=...) en Vast.ai
 TOKEN="5ab2a62dc5bb5a278547ae7ba5504196"
-BASE="/workspace/ComfyUI/models"
+COMFY="/workspace/ComfyUI"
+BASE="$COMFY/models"
 DOMAIN="civitai.com"
 
 # Formato: "carpeta|url"
@@ -16,6 +16,7 @@ QUEUE=(
   "loras|https://${DOMAIN}/api/download/models/2026095?fileId=1923012"
   "loras|https://${DOMAIN}/api/download/models/3057488?fileId=2936182"
   "loras|https://${DOMAIN}/api/download/models/1479321?fileId=1380852"
+  "loras|https://civitai.red/api/download/models/1145426?fileId=1050629"
 
   "upscale_models|https://${DOMAIN}/api/download/models/164821?fileId=2037845"
 
@@ -57,6 +58,19 @@ download_one() {
   echo
 }
 
+# Descarga varias URLs en paralelo dentro de un directorio
+download_all() {
+  local dir="$1"
+  shift
+  mkdir -p "$dir"
+  pushd "$dir" > /dev/null || return
+  for url in "$@"; do
+    wget -c -q --show-progress --content-disposition "${url}" &
+  done
+  wait
+  popd > /dev/null
+}
+
 # ───────────── Parte 1: Civitai ─────────────
 line
 echo " Iniciando descarga de $TOTAL archivos (Civitai)"
@@ -70,29 +84,57 @@ for item in "${QUEUE[@]}"; do
 done
 
 # ───────────── Parte 2: Hugging Face ─────────────
-download_all() {
-  local dir="$1"
-  shift
-  mkdir -p "$dir"
-  cd "$dir" || return
-  for url in "$@"; do
-    wget -q --show-progress --content-disposition "${url}" &
-  done
-  wait
-  cd - > /dev/null
-}
-
 line
 echo " Descargando modelos de Hugging Face"
 line
 
 # Ultralytics face detector (bbox) - para FaceDetailer
-download_all "/workspace/ComfyUI/models/ultralytics/bbox" \
+download_all "$BASE/ultralytics/bbox" \
   "https://huggingface.co/Bingsu/adetailer/resolve/main/face_yolov8m.pt"
 
 # SAM model (opcional, mejor calidad que sam_vit_b)
-download_all "/workspace/ComfyUI/models/sams" \
+download_all "$BASE/sams" \
   "https://huggingface.co/segments-arnaud/sam_vit_l/resolve/main/sam_vit_l_0b3195.pth"
+
+# Upscalers (easygoing0114/AI_upscalers)
+UPSCALE_BASE="https://huggingface.co/easygoing0114/AI_upscalers/resolve/main"
+UPSCALERS=(
+  RealESRGAN_x4plus_anime_6B.safetensors
+  4x_IllustrationJaNai_V1_ESRGAN_135k.safetensors
+  4x-AnimeSharp.safetensors
+  4x_NMKD-YandereNeoXL_200k.safetensors
+  4x-UltraSharp.safetensors
+)
+UPSCALE_URLS=()
+for f in "${UPSCALERS[@]}"; do
+  UPSCALE_URLS+=("$UPSCALE_BASE/$f")
+done
+download_all "$BASE/upscale_models" "${UPSCALE_URLS[@]}"
+
+# ───────────── Parte 3: IPAdapter (SDXL) ─────────────
+line
+echo " Instalando IPAdapter + CLIP Vision"
+line
+
+mkdir -p "$BASE/ipadapter" "$BASE/clip_vision"
+
+wget -c -O "$BASE/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors" \
+  "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"
+
+wget -c -O "$BASE/ipadapter/ip-adapter-plus-face_sdxl_vit-h.safetensors" \
+  "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors"
+
+# CLIP Vision (obligatorio, con el nombre correcto)
+wget -c -O "$BASE/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" \
+  "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors"
+
+# Nodo IPAdapter
+mkdir -p "$COMFY/custom_nodes"
+if [[ -d "$COMFY/custom_nodes/ComfyUI_IPAdapter_plus" ]]; then
+  echo "Nodo IPAdapter ya existe, omitiendo clone."
+else
+  git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus "$COMFY/custom_nodes/ComfyUI_IPAdapter_plus"
+fi
 
 # ───────────── Resumen ─────────────
 echo
@@ -112,3 +154,4 @@ fi
 
 line
 echo "🎉 Todas las descargas se completaron correctamente"
+echo "Listo. Reinicia ComfyUI."
