@@ -2,22 +2,21 @@
 set -uo pipefail
 
 # ════════════════════════════════════════════════════════════════
-#  MODELOS  →  formato:  "modelo_ollama|nombre_final"
+#  SOLO ESTOS 2 MODELOS  →  formato:  "modelo_ollama|nombre_final"
 #  Cada uno se descarga y se crea con TU comando (system prompt) incluido.
-#  Puedes agregar más líneas. También sirven modelos de Hugging Face en
-#  formato GGUF:  "hf.co/usuario/repo:Q4_K_M|mi_modelo"
-#  Verifica los tags en ollama.com/library si alguno falla.
+#  Este script REEMPLAZA al provisioning por defecto de la plantilla,
+#  así que no se descarga ningún otro modelo.
 # ════════════════════════════════════════════════════════════════
 MODELS=(
-  "huihui_ai/qwen3-abliterated:14b|prompter-qwen"            # ~9 GB  · el más preciso
-  "mannix/llama3.1-8b-abliterated:q5_K_M|prompter-llama"     # ~5.7 GB · el más rápido
-  "dolphin3:8b|prompter-dolphin"                             # ~5 GB  · obedece bien el system prompt
+  "vickiovikthompson/uncensored-qwen|prompter-qwen-unc"      # modelo que pediste (Ollama, base Qwen 2.5)
+  "huihui_ai/qwen3-abliterated:14b|prompter-qwen3"           # ~9 GB · reemplaza al ZIP de GitHub (ver nota)
 )
 
 # Tu comando (system prompt). Por defecto se lee de tu repo de GitHub.
 SYSTEM_URL="${SYSTEM_PROMPT_URL:-https://raw.githubusercontent.com/adrianbroly2005-boop/LINKS/main/system_prompt.txt}"
 TEMPERATURE="${LLM_TEMPERATURE:-0.7}"
 NUM_CTX="${LLM_NUM_CTX:-4096}"
+FILE_HELP="${LLM_FILE_HELP:-1}"      # 1 = el modelo sabe crear archivos con el Code Interpreter
 
 WORKDIR="/workspace/llm"
 TMP_PORT=11500
@@ -34,6 +33,7 @@ fi
 
 # ───────────── 2. Servidor temporal (el de la plantilla está pausado durante el provisioning) ─────────────
 export OLLAMA_HOST="127.0.0.1:${TMP_PORT}"
+export OLLAMA_MODELS="${OLLAMA_MODELS:-/workspace/ollama/models}"   # misma carpeta que usa la plantilla
 ollama serve > "$WORKDIR/ollama_provision.log" 2>&1 &
 SERVER_PID=$!
 for _ in $(seq 1 60); do
@@ -42,14 +42,23 @@ for _ in $(seq 1 60); do
 done
 
 # ───────────── 3. Tu comando (system prompt) ─────────────
-SYSTEM_FILE="$WORKDIR/system_prompt.txt"
-if curl -fsSL "$SYSTEM_URL" -o "$SYSTEM_FILE" && [ -s "$SYSTEM_FILE" ]; then
+BASE_FILE="$WORKDIR/system_prompt.txt"
+SYSTEM_FILE="$WORKDIR/system_full.txt"
+if curl -fsSL "$SYSTEM_URL" -o "$BASE_FILE" && [ -s "$BASE_FILE" ]; then
   echo "✅ System prompt descargado"
 else
-  cat > "$SYSTEM_FILE" <<'EOF'
+  cat > "$BASE_FILE" <<'EOF'
 Eres un generador de prompts SFW para imágenes. Responde únicamente con el prompt final, sin explicaciones.
 EOF
   echo "⚠️  Usando system prompt por defecto (no se encontró $SYSTEM_URL)"
+fi
+
+cp "$BASE_FILE" "$SYSTEM_FILE"
+if [ "$FILE_HELP" = "1" ]; then
+  cat >> "$SYSTEM_FILE" <<'EOF'
+
+Cuando el usuario pida un archivo (bloc de notas .txt, .md, .csv, .json, .html, etc.), créalo con el Code Interpreter: escribe el contenido en un archivo con Python, guárdalo en el sistema de archivos para que el usuario pueda descargarlo, y confirma el nombre del archivo.
+EOF
 fi
 
 # ───────────── 4. Descargar y crear cada modelo ─────────────
