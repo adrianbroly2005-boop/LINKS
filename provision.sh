@@ -3,7 +3,7 @@ set -uo pipefail
 
 # ───────────── Configuración ─────────────
 # Exporta el token antes de correr:  export CIVITAI_TOKEN="tu_token"
-TOKEN="5ab2a62dc5bb5a278547ae7ba5504196"
+TOKEN="${CIVITAI_TOKEN:-}"
 COMFY="/workspace/ComfyUI"
 BASE="$COMFY/models"
 DOMAIN="civitai.com"
