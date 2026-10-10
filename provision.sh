@@ -20,16 +20,19 @@ fi
 
 # Formato: "carpeta|url"  (el título se consulta solo a la API de Civitai)
 QUEUE=(
-  "loras|https://${DOMAIN}/api/download/models/2126463?fileId=2020686"
-  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829"
-  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538"
-  "loras|https://${DOMAIN}/api/download/models/1715751?fileId=1616313"
-  "loras|https://${DOMAIN}/api/download/models/2026095?fileId=1923012"
-  "loras|https://${DOMAIN}/api/download/models/3057488?fileId=2936182"
-  "loras|https://${DOMAIN}/api/download/models/1479321?fileId=1380852"
-  "loras|https://${RED}/api/download/models/1145426?fileId=1050629"
-  "loras|https://${RED}/api/download/models/3114196?fileId=2994409"
-  "loras|https://${RED}/api/download/models/1680391?fileId=1581449"
+  "loras|https://${DOMAIN}/api/download/models/2362210?fileId=2252956|Mixplin_Style"
+  "loras|https://${DOMAIN}/api/download/models/2233984?fileId=2126880|Shexyo"
+  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538|T-Rex Studio V2 NEW!!- Hentai +18" 
+  "loras|https://${DOMAIN}/api/download/models/1680391?fileId=1581449|rizdraws_style"
+  "loras|https://${DOMAIN}/api/download/models/1672146?fileId=1572944|dzenrei_style"
+  "loras|https://${DOMAIN}/api/download/models/994457?fileId=900288|Saigalisk_Artist"
+  "loras|https://${DOMAIN}/api/download/models/2026095?fileId=1923012|CreamyAI_Style"
+  "loras|https://${DOMAIN}/api/download/models/1903200?fileId=1802650|11_22_Style"
+  "loras|https://${DOMAIN}/api/download/models/3252969?fileId=3135998|YabaAIstyle"
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|Milfication"
+  "loras|https://${DOMAIN}/api/download/models/2056337?fileId=1953157|Raikageart"
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|Milfication"
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|DreamcoreArt"
 
   "upscale_models|https://${DOMAIN}/api/download/models/164821?fileId=2037845"
 
