@@ -22,7 +22,7 @@ fi
 QUEUE=(
   "loras|https://${DOMAIN}/api/download/models/2362210?fileId=2252956|Mixplin_Style"
   "loras|https://${DOMAIN}/api/download/models/2233984?fileId=2126880|Shexyo"
-  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538|T-Rex Studio V2 NEW!!- Hentai +18" 
+  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538|T-Rex_Studio_V2" 
   "loras|https://${DOMAIN}/api/download/models/1680391?fileId=1581449|rizdraws_style"
   "loras|https://${DOMAIN}/api/download/models/1672146?fileId=1572944|dzenrei_style"
   "loras|https://${DOMAIN}/api/download/models/994457?fileId=900288|Saigalisk_Artist"
@@ -37,8 +37,6 @@ QUEUE=(
   "upscale_models|https://${DOMAIN}/api/download/models/164821?fileId=2037845"
 
   "checkpoints|https://${RED}/api/download/models/2584885?fileId=2472352"
-  "checkpoints|https://${RED}/api/download/models/1166878?fileId=1072193"
-  "checkpoints|https://${RED}/api/download/models/1828803?fileId=1729137"
 
   "vae|https://${DOMAIN}/api/download/models/669051?fileId=584020"
   "vae|https://${DOMAIN}/api/download/models/3315526?fileId=3200992"
