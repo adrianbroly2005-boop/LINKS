@@ -33,6 +33,7 @@ QUEUE=(
   "loras|https://${DOMAIN}/api/download/models/2056337?fileId=1953157|Raikageart"
   "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|Milfication"
   "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|DreamcoreArt"
+  "loras|https://${DOMAIN}/api/download/models/2126463?fileId=2020686|Josi"
 
   "upscale_models|https://${DOMAIN}/api/download/models/164821?fileId=2037845"
 
