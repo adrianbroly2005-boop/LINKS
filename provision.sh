@@ -20,20 +20,20 @@ fi
 
 # Formato: "carpeta|url"  (el título se consulta solo a la API de Civitai)
 QUEUE=(
-  "loras|https://${DOMAIN}/api/download/models/2362210?fileId=2252956|Mixplin_Style"
-  "loras|https://${DOMAIN}/api/download/models/2233984?fileId=2126880|Shexyo"
-  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538|T-Rex_Studio_V2" 
-  "loras|https://${DOMAIN}/api/download/models/1680391?fileId=1581449|rizdraws_style"
-  "loras|https://${DOMAIN}/api/download/models/1672146?fileId=1572944|dzenrei_style"
-  "loras|https://${DOMAIN}/api/download/models/994457?fileId=900288|Saigalisk_Artist"
-  "loras|https://${DOMAIN}/api/download/models/2026095?fileId=1923012|CreamyAI_Style"
-  "loras|https://${DOMAIN}/api/download/models/1903200?fileId=1802650|11_22_Style"
-  "loras|https://${DOMAIN}/api/download/models/3252969?fileId=3135998|YabaAIstyle"
-  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|Milfication"
-  "loras|https://${DOMAIN}/api/download/models/2056337?fileId=1953157|Raikageart"
-  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|Milfication"
-  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829|DreamcoreArt"
-  "loras|https://${DOMAIN}/api/download/models/2126463?fileId=2020686|Josi"
+  "loras|https://${DOMAIN}/api/download/models/2362210?fileId=2252956"|Mixplin_Style
+  "loras|https://${DOMAIN}/api/download/models/2233984?fileId=2126880"|Shexyo
+  "loras|https://${DOMAIN}/api/download/models/1804885?fileId=1705538"|T-Rex_Studio_V2"
+  "loras|https://${DOMAIN}/api/download/models/1680391?fileId=1581449"|rizdraws_style
+  "loras|https://${DOMAIN}/api/download/models/1672146?fileId=1572944"|dzenrei_style
+  "loras|https://${DOMAIN}/api/download/models/994457?fileId=900288"|Saigalisk_Artist
+  "loras|https://${DOMAIN}/api/download/models/2026095?fileId=1923012"|CreamyAI_Style
+  "loras|https://${DOMAIN}/api/download/models/1903200?fileId=1802650"|11_22_Style
+  "loras|https://${DOMAIN}/api/download/models/3252969?fileId=3135998"|YabaAIstyle
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829"|Milfication
+  "loras|https://${DOMAIN}/api/download/models/2056337?fileId=1953157"|Raikageart
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829"|Milfication
+  "loras|https://${DOMAIN}/api/download/models/3200596?fileId=3081829"|DreamcoreArt
+  "loras|https://${DOMAIN}/api/download/models/2126463?fileId=2020686"|Josi
 
   "upscale_models|https://${DOMAIN}/api/download/models/164821?fileId=2037845"
 
